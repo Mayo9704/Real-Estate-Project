@@ -10,13 +10,19 @@ require("./db");
 const express = require("express");
 
 const app = express();
+const hbs = require("hbs");
+const path = require("path");
+
+app.set("view engine", "hbs");
+app.set("views", path.join(__dirname, "views"));
+app.use(express.static(path.join(__dirname, "public")));
+
 
 // ℹ️ This function is getting exported from the config folder. It runs most pieces of middleware
 require("./config")(app);
 
 // 👇 Start handling routes here
-const indexRoutes = require("./routes/index.routes");
-app.use("/api", indexRoutes);
+app.get("/", (req, res, next) => res.render("index"));
 
 const authRoutes = require("./routes/auth.routes");
 app.use("/auth", authRoutes);
